@@ -1,0 +1,16 @@
+﻿  QInt.cpp
+E:\fix bug\Project1\Project1\QInt.cpp(37,20): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(49,56): warning C4334: '<<': result of 32-bit shift implicitly converted to 64 bits (was 64-bit shift intended?)
+E:\fix bug\Project1\Project1\QInt.cpp(257,19): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(618,20): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1398,20): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1444,20): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1474,20): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1540,25): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1541,21): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1562,20): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1561,7): warning C4101: 'temp': unreferenced local variable
+E:\fix bug\Project1\Project1\QInt.cpp(1664,11): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1667,12): warning C4018: '<': signed/unsigned mismatch
+E:\fix bug\Project1\Project1\QInt.cpp(1703): warning C4715: 'CalculateOpe': not all control paths return a value
+  Project1.vcxproj -> E:\fix bug\Project1\Debug\Project1.exe
