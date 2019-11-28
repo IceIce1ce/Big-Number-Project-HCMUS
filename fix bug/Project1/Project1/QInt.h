@@ -6,25 +6,23 @@
 #include<algorithm>
 #include<vector>
 #define BIT_INT64 64
-#define MAX_BIT	128
 using namespace std;
 
 class QInt
 {
 public:
-	static QInt QIntToTwosComplement(QInt); //fixed
+	static QInt QIntToTwosComplement(QInt); //convert QInt to negative 1 //fixed
 	string QIntToBinaryString(QInt&);  //fixed
 	string QIntToHex(QInt&);  //fixed
 	string QIntToDec(QInt&);  //fixed
 	string Power(int a, int n); //fixed
-	string StrIntToTwosComplement(string&); //fixed
 public:
 	//const static int num_of_int = 4;
 	//int arrayBits[num_of_int];
 	__int64 arrayBits[4] = { 0, 0, 0, 0 }; //fixed
 	QInt(const string& str); //fixed
 	__int64* getData(); //fixed
-	int getBit(int pos);
+	int getBit(int pos); //fixed
 	void changeBit(int pos);
 	void addToOne(); //negative 2
 	bool checkZero(); //fixed
@@ -77,10 +75,10 @@ public:
 	void printQInt(int base);
 	void ScanQInt(string source, int sourceBase);
 	/////handle for ror, rol
-	void TurnOnBit(int k);
-	void TurnOffBit(int k);
-	QInt rol();
-	QInt ror();
+	void TurnOnBit(int k); //fixed
+	void TurnOffBit(int k); //fixed
+	QInt rol(); //fixed
+	QInt ror(); //fixed
 };
 ///cut zero for bin
 string normalizeString(string str);
@@ -93,7 +91,7 @@ void mainCaculate(char* file_input, char* file_output);
 vector<string> cut_stringInput(string str_input);
 QInt CalculateOpe(QInt a, QInt b, string ope);
 ////handle for ror, rol
-int getInfo(string& str);
+int getInfo(string& str); //fixed
 void subProcess(string& line);
 ///cut zero for hex, dec
 string cutZero(string str);

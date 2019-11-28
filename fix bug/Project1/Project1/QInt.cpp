@@ -46,7 +46,7 @@ string QInt::divByTwo(string str, bool isZero)
 
 void QInt::changeBit(int pos)
 {
-	this->arrayBits[4 - pos / 64 - 1] ^= (1 << (pos % 64));
+	this->arrayBits[4 - pos / 32 - 1] ^= (1 << (pos % 32)); //change to type 32 to avoid lost value
 }
 
 int QInt::getBit(int pos)
@@ -279,6 +279,30 @@ void QInt::decimalToQInt(string str)
 			this->addToOne();
 		}
 	}
+}
+
+bool operator > (string a, string b) //put this function before sum/sub/multi/divBinaryString to avoid error compare with type unsigned
+{
+	if (a.size() > b.size())
+	{
+		return true;
+	}
+	else if (a.size() < b.size())
+	{
+		return false;
+	}
+	else
+	{
+		int index = a.size() - 1;
+		for (int i = index; i >= 0; i--)
+		{
+			int digit1 = a[a.size() - i-1] -'0';
+			int digit2 = b[b.size() - i-1] -'0';
+			if (digit1 > digit2) return true;
+			else if (digit1 < digit2) return false;
+		}
+	}
+	return false;
 }
 
 string QInt::sumBinaryString(string a, string b)
@@ -721,30 +745,6 @@ string QInt::divisionBinaryString(string Dividend, string divisor)
 	return quotient;
 }
 
-bool operator > (string a, string b)
-{
-	if (a.size() > b.size())
-	{
-		return true;
-	}
-	else if (a.size() < b.size())
-	{
-		return false;
-	}
-	else
-	{
-		int index = a.size() - 1;
-		for (int i = index; i >= 0; i--)
-		{
-			int digit1 = a[a.size() - i-1] -'0';
-			int digit2 = b[b.size() - i-1] -'0';
-			if (digit1 > digit2) return true;
-			else if (digit1 < digit2) return false;
-		}
-	}
-	return false;
-}
-
 string QInt::Power(int a, int n)
 {
 	string Result;
@@ -757,7 +757,7 @@ string QInt::Power(int a, int n)
 			{
 				Pow = (BIT_INT64 / 2 - 1) * 2 / a;
 			}
-			Result = to_string((unsigned _int32)pow(a, Pow));
+			Result = to_string((unsigned _int32) pow(a, Pow));
 			for (int i = Pow + 1; i <= n; i++)
 			{
 				Result = multiplyBinaryString(Result, to_string(a));
@@ -1420,7 +1420,7 @@ string QInt::DecToBin(string& strDec)
 	while (strDec != "")
 	{
 		result.push_back(((strDec[strDec.size() - 1] - '0') % 2) + '0');
-		strDec = divByTwo(strDec);
+		strDec = StringDivTwo(strDec);
 	}
 	reverse(result.begin(), result.end());
 	if (negative == true)
@@ -1555,32 +1555,6 @@ string QInt::BinToDec(string& strBin)
 	return dec;
 }
 
-string QInt::StrIntToTwosComplement(string& strBin)
-{
-	string Temp = strBin;
-	char temp;
-	for (int i = 0; i < strBin.size(); i++)
-	{	if (Temp[i] == '0')
-		{
-			Temp[i] = '1';
-		}
-		else if(Temp[i] == '1')
-		{
-			Temp[i] ='0';
-		}
-	}
-	for (int i = strBin.size(); i > 0; i--)
-	{
-		if (Temp[i] == '0')
-		{
-			Temp[i] = '1';
-			return Temp;
-		}
-		Temp[i] = '0';
-	}
-	return Temp ;
-}
-
 /////process
 void printBin(QInt x)
 {
@@ -1698,7 +1672,7 @@ QInt CalculateOpe(QInt a, QInt b, string ope)
 		case '/': return a / b;
 		case '&': return a & b;
 		case '|': return a | b;
-		case '^': return a ^ b;
+		default: return a ^ b;
 	}
 }
 
@@ -2238,7 +2212,7 @@ void readFile(const string Input, const string Output)
 		{
 			s.erase(s.begin(), s.begin() + 1);
 		}
-		if (s == "") s = "0";
+		if(s == "") break;
 		cout << s << endl;
 		fout << s << endl;
 	}
