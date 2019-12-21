@@ -15,7 +15,7 @@ public:
 	string QIntToBinaryString(QInt&);  //fixed
 	string QIntToHex(QInt&);  //fixed
 	string QIntToDec(QInt&);  //fixed
-	string Power(int a, int n); //fixed
+	string Power(int a, int n); //fixed  //use for integer number type string
 public:
 	//const static int num_of_int = 4;
 	//int arrayBits[num_of_int];

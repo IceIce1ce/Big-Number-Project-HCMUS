@@ -6,13 +6,13 @@
 
 int QInt::numToChar(char c)
 {
-	if (c == '1' || c == '3' || c == '5' || c == '7' || c == '9') return 1;
+	if (c == '1' || c == '3' || c == '5' || c == '7' || c == '9') return 1; //odd return 1, even return 0
 	return 0;
 }
 
-QInt::QInt(const string &str)
+QInt::QInt(const string &str) //store by little endian
 {
-	this->Init();
+	this->Init(); 
 	for (int i = str.length() - 1; i >= 0; i--)
 	{
 		if (str[i] == '1')
@@ -291,15 +291,16 @@ bool operator > (string a, string b) //put this function before sum/sub/multi/di
 	{
 		return false;
 	}
-	else
+	else //if(a.size() == b.size()) --> compare digit
 	{
 		int index = a.size() - 1;
 		for (int i = index; i >= 0; i--)
 		{
-			int digit1 = a[a.size() - i-1] -'0';
-			int digit2 = b[b.size() - i-1] -'0';
+			int digit1 = a[a.size() - i - 1] - '0';
+			int digit2 = b[b.size() - i - 1] - '0';
 			if (digit1 > digit2) return true;
 			else if (digit1 < digit2) return false;
+			//else if(digit1 == digit2) --> need to fix
 		}
 	}
 	return false;
@@ -695,8 +696,8 @@ string QInt::divisionBinaryString(string Dividend, string divisor)
 	string dividend = Dividend;
 	int divisorLength = divisor.size();
 	int dividendLength = dividend.size();
-	std::string tempDividendString = "";
-	std::string quotient = "";
+	string tempDividendString = "";
+	string quotient = "";
 	for (int i = dividendLength - 1; i >= 0; i--)
 	{
 		int digit = Dividend[dividendLength - i - 1] - '0';
@@ -722,7 +723,7 @@ string QInt::divisionBinaryString(string Dividend, string divisor)
 				}
 			}
 			tempDivisor = divisor;
-			string multiplier(std::to_string(newDigit));
+			string multiplier(to_string(newDigit));
 			string temp = multiplyBinaryString(tempDivisor, multiplier);
 			tempDividend = subtractBinaryString(tempDividend,temp);
 			tempDividendString = tempDividend;
@@ -753,14 +754,14 @@ string QInt::Power(int a, int n)
 		if (a > 1)
 		{
 			int Pow = n;
-			if (n > (BIT_INT64 / 2 - 1) * 2 / a) 
+			if (n > (BIT_INT64 / 2 - 1) * 2 / a) //avoid overflow
 			{
 				Pow = (BIT_INT64 / 2 - 1) * 2 / a;
 			}
 			Result = to_string((unsigned _int32) pow(a, Pow));
-			for (int i = Pow + 1; i <= n; i++)
+			for (int i = Pow + 1; i <= n; i++) 
 			{
-				Result = multiplyBinaryString(Result, to_string(a));
+				Result = multiplyBinaryString(Result, to_string(a)); //if a part of number has possibly overflow, multi by string
 			}
 		}
 		else
@@ -792,7 +793,7 @@ void QInt::operator =  (const string &k)
 	__int64 temp = 0;
 	for (int i = k.length() - 1; i >= 0; i--)
 	{
-		if (k[i]=='1') this->TurnOnBit(k.length()-1-i); else this->TurnOffBit(k.length()-1-i);
+		if (k[i] == '1') this->TurnOnBit(k.length()-1-i); else this->TurnOffBit(k.length()-1-i);
 	}
 }
 
@@ -804,7 +805,7 @@ void QInt::operator =  (const QInt &k)
 	arrayBits[3] = k.arrayBits[3];
 }
 
-QInt QInt::QIntToTwosComplement(QInt q)
+QInt QInt::QIntToTwosComplement(QInt q) //negative 1 plus 1 --> negative 2
 {
 	QInt result = ~q;
 	result = result + QInt("1");
@@ -862,9 +863,9 @@ QInt QInt::operator + (QInt q)
 	QInt temp;
 	while (!(q.checkZero()))
 	{
-		temp = result & q;
-		result = result ^ q;
-		q = temp << 1;
+		temp = result & q; //take bit same value 1 between 2 numbers
+		result = result ^ q; //sum 2 different bit 0, 1
+		q = temp << 1; //move bit which is 1 to 1 bit to continue sum
 	}
 	return result;
 }
@@ -1397,13 +1398,14 @@ string StringDivTwo(string &number)
 	int Temp = 0;
 	for (int i = 0; i < number.size(); i++)
 	{
-		Temp = Temp * 10 + (number[i] - '0');
-		if (i > 0 || (i == 0 && Temp >= 2))
+		Temp = Temp * 10 + (number[i] - '0'); //find prefix of number that is larger than divisor
+		if (i > 0 || (i == 0 && Temp >= 2)) //repeatedly divide divisor with temp. After every divison, update temp to include one more digit
 		{
 			Result.push_back((Temp / 2) + '0');
 		}
 		Temp = Temp % 2;
 	}
+	//if(Result.length() == 0) return "0"; //if divisor is greater than number
 	return Result;
 }
 
@@ -1469,7 +1471,7 @@ string QInt::BinToHex(string& strHex)
 	string Result;
 	while (strHex.size() % 4 != 0)
 	{
-		strHex.insert(strHex.begin(), '0'); 
+		strHex.insert(strHex.begin(), '0'); // add zero to fulfill 4 bit
 	}
 	for (int i = 0; i < strHex.size(); i++)
 	{
@@ -1531,7 +1533,7 @@ string QInt::BinToDec(string& strBin)
 	bool negative = false;
 	string temp = "0";
 	string resulttemp;
-	if (strBin[0] == '1'&& strBin.length() == 128) 
+	if (strBin[0] == '1'&& strBin.length() == 128) //check negative number
 	{
 		negative = true;
 		int i = strBin.length() - 1;
@@ -1556,19 +1558,19 @@ string QInt::BinToDec(string& strBin)
 }
 
 /////process
-void printBin(QInt x)
+void printBin(QInt x) //convert binary string to Qint
 {
 	string binString = normalizeString(x.toBinary());
 	cout << binString;
 }
 
-void printDec(QInt x)
+void printDec(QInt x) //convert decimal string to Qint
 {
 	string decString = cutZero(x.toString());
 	cout << decString;
 }
 
-void printHex(QInt x)
+void printHex(QInt x) //convert hexa string to Qint
 {
 	string hexString = cutZero(x.toHexa());
 	cout << hexString;
@@ -2212,7 +2214,9 @@ void readFile(const string Input, const string Output)
 		{
 			s.erase(s.begin(), s.begin() + 1);
 		}
-		if(s == "") break;
+		//if(s == "0") continue;
+		//if(s == "") s.replace(s.begin(), s.end(), "0");
+		if(s == "") s.replace(s.begin(), s.end(), "0"); 
 		cout << s << endl;
 		fout << s << endl;
 	}
